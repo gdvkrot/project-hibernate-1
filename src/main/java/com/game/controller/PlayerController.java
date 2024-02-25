@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,7 +35,12 @@ public class PlayerController {
         pageSize = isNull(pageSize) ? 3 : pageSize;
 
         List<Player> players = playerService.getAll(pageNumber, pageSize);
-        return players.stream().map(PlayerController::toPlayerInfo).collect(Collectors.toList());
+        //return players.stream().map(PlayerController::toPlayerInfo).collect(Collectors.toList());
+        List<PlayerInfo> result = new ArrayList<>();
+        for (Player item: players) {
+            result.add(PlayerController.toPlayerInfo(item));
+        }
+        return result;
     }
 
     @GetMapping("/count")
