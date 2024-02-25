@@ -35,12 +35,7 @@ public class PlayerController {
         pageSize = isNull(pageSize) ? 3 : pageSize;
 
         List<Player> players = playerService.getAll(pageNumber, pageSize);
-        //return players.stream().map(PlayerController::toPlayerInfo).collect(Collectors.toList());
-        List<PlayerInfo> result = new ArrayList<>();
-        for (Player item: players) {
-            result.add(PlayerController.toPlayerInfo(item));
-        }
-        return result;
+        return players.stream().map(PlayerController::toPlayerInfo).collect(Collectors.toList());
     }
 
     @GetMapping("/count")

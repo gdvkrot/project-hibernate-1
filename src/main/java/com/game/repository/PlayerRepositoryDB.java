@@ -22,8 +22,8 @@ public class PlayerRepositoryDB implements IPlayerRepository {
 
     public PlayerRepositoryDB() {
         Properties properties = new Properties();
-        properties.put(Environment.DRIVER, "com.mysql.jdbc.Driver");
-        properties.put(Environment.URL, "jdbc:mysql://localhost:3306/rpg");
+        properties.put(Environment.DRIVER, "com.p6spy.engine.spy.P6SpyDriver");
+        properties.put(Environment.URL, "jdbc:p6spy:mysql://localhost:3306/rpg");
         properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
         properties.put(Environment.USER, "root");
         properties.put(Environment.PASS, "root");
@@ -40,7 +40,7 @@ public class PlayerRepositoryDB implements IPlayerRepository {
     public List<Player> getAll(int pageNumber, int pageSize) {
         try (Session session = sessionFactory.openSession()) {
             String sql = "SELECT Player.* FROM Player LIMIT :limitValue OFFSET :offsetValue";
-            TypedQuery<Player> query = session.createSQLQuery(sql);
+            TypedQuery<Player> query = session.createSQLQuery(sql).addEntity(Player.class);
             query.setParameter("limitValue", pageSize);
             query.setParameter("offsetValue", pageNumber * pageSize);
             List<Player> result = query.getResultStream().collect(Collectors.toList());
